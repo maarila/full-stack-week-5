@@ -11,6 +11,8 @@ class App extends React.Component {
       username: "",
       password: "",
       user: null,
+      error: null,
+      success: null,
       blogs: [],
       title: "",
       author: "",
@@ -40,11 +42,22 @@ class App extends React.Component {
       this.setState({
         username: "",
         password: "",
-        user
+        user,
+        success: `User ${user.name} successfully logged in`
       });
-
+      setTimeout(() => {
+        this.setState({success: null});
+      }, 4000);
     } catch (exception) {
       console.log(exception);
+      this.setState({
+        username: "",
+        password: "",
+        error: "Wrong username or password."
+      });
+      setTimeout(() => {
+        this.setState({error: null});
+      }, 4000);
     }
   };
 
@@ -62,8 +75,14 @@ class App extends React.Component {
         blogs: this.state.blogs.concat(newBlog),
         title: "",
         author: "",
-        url: ""
+        url: "",
+        success: `"${blogObject.title}" by ${
+          blogObject.author
+        } successfully added to database.`
       });
+      setTimeout(() => {
+        this.setState({success: null});
+      }, 4000);
     });
   };
 
@@ -84,6 +103,7 @@ class App extends React.Component {
     if (this.state.user === null) {
       return (
         <div>
+          <Notification error={this.state.error} success={this.state.success} />
           <h2>Log in to application</h2>
           <form onSubmit={this.login}>
             <div>
@@ -111,49 +131,73 @@ class App extends React.Component {
     }
     return (
       <div>
+        <Notification error={this.state.error} success={this.state.success} />
         <h2>blogs</h2>
         <p>
           <em>{this.state.user.name} is logged in </em>
           <button onClick={this.logout}>logout</button>
         </p>
-        <div>
-          <h2>create new blog entry</h2>
-          <form onSubmit={this.addBlog}>
-            <div>
-              title:{" "}
-              <input
-                type="text"
-                name="title"
-                value={this.state.title}
-                onChange={this.handleBlogCreation}
-              />
-            </div>
-            <div>
-              author:{" "}
-              <input
-                type="text"
-                name="author"
-                value={this.state.author}
-                onChange={this.handleBlogCreation}
-              />
-            </div>
-            <div>
-              url:{" "}
-              <input
-                type="text"
-                name="url"
-                value={this.state.url}
-                onChange={this.handleBlogCreation}
-              />
-            </div>
-            <button>create</button>
-          </form>
-        </div>
+        <BlogForm
+          handleBlogCreation={this.handleBlogCreation}
+          addBlog={this.addBlog}
+          title={this.state.title}
+          author={this.state.author}
+          url={this.state.url}
+        />
         <h2>entries</h2>
         {this.state.blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
       </div>
     );
   }
 }
+
+const BlogForm = ({handleBlogCreation, addBlog, title, author, url}) => {
+  return (
+    <div>
+      <h2>create new blog entry</h2>
+      <form onSubmit={addBlog}>
+        <div>
+          title:{" "}
+          <input
+            type="text"
+            name="title"
+            value={title}
+            onChange={handleBlogCreation}
+          />
+        </div>
+        <div>
+          author:{" "}
+          <input
+            type="text"
+            name="author"
+            value={author}
+            onChange={handleBlogCreation}
+          />
+        </div>
+        <div>
+          url:{" "}
+          <input
+            type="text"
+            name="url"
+            value={url}
+            onChange={handleBlogCreation}
+          />
+        </div>
+        <button>create</button>
+      </form>
+    </div>
+  );
+};
+
+const Notification = ({error, success}) => {
+  if (error === null && success === null) {
+    return null;
+  }
+  return success === null ? (
+    <div className="error">{error}</div>
+  ) : (
+    <div className="success">{success}</div>
+  );
+};
 
 export default App;
