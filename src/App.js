@@ -2,6 +2,8 @@ import React from "react";
 import Blog from "./components/Blog";
 import Notification from "./components/Notification";
 import BlogForm from "./components/BlogForm";
+import Login from "./components/Login";
+import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import "./App.css";
@@ -65,6 +67,7 @@ class App extends React.Component {
 
   addBlog = (e) => {
     e.preventDefault();
+    this.blogForm.toggleVisibility();
     const blogObject = {
       title: this.state.title,
       author: this.state.author,
@@ -106,28 +109,12 @@ class App extends React.Component {
       return (
         <div>
           <Notification error={this.state.error} success={this.state.success} />
-          <h2>Log in to application</h2>
-          <form onSubmit={this.login}>
-            <div>
-              username:
-              <input
-                type="text"
-                value={this.state.username}
-                name="username"
-                onChange={this.handleLoginField}
-              />
-            </div>
-            <div>
-              password:
-              <input
-                type="password"
-                value={this.state.password}
-                name="password"
-                onChange={this.handleLoginField}
-              />
-            </div>
-            <button>login</button>
-          </form>
+          <Login
+            handleLogin={this.login}
+            handleLoginField={this.handleLoginField}
+            username={this.state.username}
+            password={this.state.password}
+          />
         </div>
       );
     }
@@ -139,13 +126,17 @@ class App extends React.Component {
           <em>{this.state.user.name} is logged in </em>
           <button onClick={this.logout}>logout</button>
         </p>
-        <BlogForm
-          handleBlogCreation={this.handleBlogCreation}
-          addBlog={this.addBlog}
-          title={this.state.title}
-          author={this.state.author}
-          url={this.state.url}
-        />
+        <Togglable
+          buttonLabel="create new entry"
+          ref={(component) => (this.blogForm = component)}>
+          <BlogForm
+            handleBlogCreation={this.handleBlogCreation}
+            addBlog={this.addBlog}
+            title={this.state.title}
+            author={this.state.author}
+            url={this.state.url}
+          />
+        </Togglable>
         <h2>entries</h2>
         {this.state.blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
       </div>
