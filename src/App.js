@@ -16,6 +16,11 @@ class App extends React.Component {
 
   componentWillMount() {
     blogService.getAll().then((blogs) => this.setState({blogs}));
+    const loggedUserJSON = window.localStorage.getItem("loggedUser");
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      this.setState({user});
+    }
   }
 
   login = async (e) => {
@@ -25,10 +30,16 @@ class App extends React.Component {
         username: this.state.username,
         password: this.state.password
       });
-      this.setState({username: "", password:"", user});
+      window.localStorage.setItem("loggedUser", JSON.stringify(user));
+      this.setState({username: "", password: "", user});
     } catch (exception) {
       console.log("käyttäjätunnus tai salasana väärin");
     }
+  };
+
+  logout = (e) => {
+    window.localStorage.removeItem("loggedUser");
+    this.setState({user: null});
   };
 
   handleLoginField = (e) => {
@@ -67,7 +78,10 @@ class App extends React.Component {
     return (
       <div>
         <h2>blogs</h2>
-        <p>{this.state.user.name} logged in</p>
+        <p>
+          <em>{this.state.user.name} is logged in </em>
+          <button onClick={this.logout}>logout</button>
+        </p>
         {this.state.blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
       </div>
     );
