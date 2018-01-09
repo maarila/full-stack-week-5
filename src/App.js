@@ -11,8 +11,6 @@ class App extends React.Component {
       username: "",
       password: "",
       user: null,
-      error: null,
-      success: null,
       blogs: [],
       title: "",
       author: "",
@@ -42,22 +40,11 @@ class App extends React.Component {
       this.setState({
         username: "",
         password: "",
-        user,
-        success: `User ${user.name} successfully logged in`
+        user
       });
-      setTimeout(() => {
-        this.setState({success: null});
-      }, 4000);
+
     } catch (exception) {
       console.log(exception);
-      this.setState({
-        username: "",
-        password: "",
-        error: "Wrong username or password."
-      });
-      setTimeout(() => {
-        this.setState({error: null});
-      }, 4000);
     }
   };
 
@@ -75,12 +62,8 @@ class App extends React.Component {
         blogs: this.state.blogs.concat(newBlog),
         title: "",
         author: "",
-        url: "",
-        success: `"${blogObject.title}" by ${blogObject.author} added to database`
+        url: ""
       });
-      setTimeout(() => {
-        this.setState({success: null});
-      }, 4000);
     });
   };
 
@@ -101,7 +84,6 @@ class App extends React.Component {
     if (this.state.user === null) {
       return (
         <div>
-          <Notification error={this.state.error} success={this.state.success} />
           <h2>Log in to application</h2>
           <form onSubmit={this.login}>
             <div>
@@ -129,7 +111,6 @@ class App extends React.Component {
     }
     return (
       <div>
-        <Notification error={this.state.error} success={this.state.success} />
         <h2>blogs</h2>
         <p>
           <em>{this.state.user.name} is logged in </em>
@@ -174,16 +155,5 @@ class App extends React.Component {
     );
   }
 }
-
-const Notification = ({error, success}) => {
-  if (error === null && success === null) {
-    return null;
-  }
-  return success === null ? (
-    <div className="error">{error}</div>
-  ) : (
-    <div className="success">{success}</div>
-  );
-};
 
 export default App;
