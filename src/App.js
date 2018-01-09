@@ -1,5 +1,7 @@
 import React from "react";
 import Blog from "./components/Blog";
+import Notification from "./components/Notification";
+import BlogForm from "./components/BlogForm";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import "./App.css";
@@ -150,54 +152,5 @@ class App extends React.Component {
     );
   }
 }
-
-const BlogForm = ({handleBlogCreation, addBlog, title, author, url}) => {
-  return (
-    <div>
-      <h2>create new blog entry</h2>
-      <form onSubmit={addBlog}>
-        <div>
-          title:{" "}
-          <input
-            type="text"
-            name="title"
-            value={title}
-            onChange={handleBlogCreation}
-          />
-        </div>
-        <div>
-          author:{" "}
-          <input
-            type="text"
-            name="author"
-            value={author}
-            onChange={handleBlogCreation}
-          />
-        </div>
-        <div>
-          url:{" "}
-          <input
-            type="text"
-            name="url"
-            value={url}
-            onChange={handleBlogCreation}
-          />
-        </div>
-        <button>create</button>
-      </form>
-    </div>
-  );
-};
-
-const Notification = ({error, success}) => {
-  if (error === null && success === null) {
-    return null;
-  }
-  return success === null ? (
-    <div className="error">{error}</div>
-  ) : (
-    <div className="success">{success}</div>
-  );
-};
 
 export default App;
