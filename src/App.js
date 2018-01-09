@@ -26,6 +26,7 @@ class App extends React.Component {
 
   componentWillMount() {
     blogService.getAll().then((blogs) => this.setState({blogs}));
+
     const loggedUserJSON = window.localStorage.getItem("loggedUser");
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
@@ -138,7 +139,16 @@ class App extends React.Component {
           />
         </Togglable>
         <h2>entries</h2>
-        {this.state.blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
+        {this.state.blogs.map((blog) => (
+          <Blog
+            key={blog.id}
+            title={blog.title}
+            author={blog.author}
+            url={blog.url}
+            likes={blog.likes}
+            user={blog.user.name}
+          />
+        ))}
       </div>
     );
   }
