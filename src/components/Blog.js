@@ -4,7 +4,14 @@ class Blog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showAll: false
+      showAll: false,
+      showDelete:
+        this.props.blog.user === undefined ||
+        this.props.blog.user.username === this.props.user.username,
+      name:
+        this.props.blog.user === undefined
+          ? "anonymous"
+          : this.props.blog.user.name
     };
   }
 
@@ -15,6 +22,7 @@ class Blog extends React.Component {
   render() {
     const showTitle = {display: this.state.showAll ? "none" : ""};
     const showFullInfo = {display: this.state.showAll ? "" : "none"};
+    const showDelete = {display: this.state.showDelete ? "" : "none"};
 
     const blogStyle = {
       width: 400,
@@ -42,7 +50,12 @@ class Blog extends React.Component {
               like
             </button>
           </div>
-          <div>added by {this.props.blog.user.name}</div>
+          <div>added by {this.state.name}</div>
+          <div style={showDelete}>
+            <button onClick={this.props.handleDelete(this.props.blog.id)}>
+              delete
+            </button>
+          </div>
         </div>
       </div>
     );
