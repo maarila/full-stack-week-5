@@ -35,10 +35,12 @@ class Blog extends React.Component {
 
     return (
       <div style={blogStyle}>
-        <div style={showTitle}>
-          <div onClick={this.toggleShowAll}>{this.props.blog.title}</div>
+        <div style={showTitle} className="shownFirst">
+          <div onClick={this.toggleShowAll} className="clickToOpen">
+            {this.props.blog.title}
+          </div>
         </div>
-        <div style={showFullInfo}>
+        <div style={showFullInfo} className="hiddenFirst">
           <div onClick={this.toggleShowAll}>{this.props.blog.title}</div>
           <div>{this.props.blog.author}</div>
           <div>
