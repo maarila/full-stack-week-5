@@ -43,4 +43,6 @@ const getAll = () => {
   return Promise.resolve(blogs);
 };
 
-export default {getAll, blogs};
+const setToken = jest.fn()
+
+export default {getAll, setToken, blogs};

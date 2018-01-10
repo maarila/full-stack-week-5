@@ -129,11 +129,13 @@ class App extends React.Component {
           );
           this.setState({
             blogs: updatedBlogs,
-            success: `"${blogToDelete[0].title}" by ${blogToDelete[0].author} deleted`
+            success: `"${blogToDelete[0].title}" by ${
+              blogToDelete[0].author
+            } deleted`
           });
           setTimeout(() => {
             this.setState({success: null});
-          }, 4000)
+          }, 4000);
         });
       }
     };
@@ -156,13 +158,14 @@ class App extends React.Component {
     const byId = (blog1, blog2) => (blog1.likes < blog2.likes ? 1 : -1);
     if (this.state.user === null) {
       return (
-        <div>
+        <div className="loginFields">
           <Notification error={this.state.error} success={this.state.success} />
           <Login
             handleLogin={this.login}
             handleLoginField={this.handleLoginField}
             username={this.state.username}
             password={this.state.password}
+            className="login"
           />
         </div>
       );
@@ -196,6 +199,7 @@ class App extends React.Component {
               user={this.state.user}
               handleClick={this.addLike}
               handleDelete={this.deleteBlog}
+              className="blog"
             />
           ))}
       </div>
