@@ -92,6 +92,28 @@ class App extends React.Component {
     });
   };
 
+  addLike = (blog) => {
+    return () => {
+      const blogObject = {
+        user: blog.user._id,
+        likes: blog.likes + 1,
+        author: blog.author,
+        title: blog.title,
+        url: blog.url
+      };
+
+      blogService.update(blog.id, blogObject).then((updatedBlog) => {
+        let currentBlogs = this.state.blogs.filter(
+          (currentBlog) => currentBlog.id !== blog.id
+        );
+        currentBlogs = currentBlogs.concat(updatedBlog);
+        this.setState({
+          blogs: currentBlogs
+        });
+      });
+    };
+  };
+
   handleBlogCreation = (e) => {
     this.setState({[e.target.name]: e.target.value});
   };
@@ -106,6 +128,7 @@ class App extends React.Component {
   };
 
   render() {
+    const byId = (blog1, blog2) => (blog1.likes < blog2.likes ? 1 : -1);
     if (this.state.user === null) {
       return (
         <div>
@@ -139,16 +162,11 @@ class App extends React.Component {
           />
         </Togglable>
         <h2>entries</h2>
-        {this.state.blogs.map((blog) => (
-          <Blog
-            key={blog.id}
-            title={blog.title}
-            author={blog.author}
-            url={blog.url}
-            likes={blog.likes}
-            user={blog.user.name}
-          />
-        ))}
+        {this.state.blogs
+          .sort(byId)
+          .map((blog) => (
+            <Blog key={blog.id} blog={blog} handleClick={this.addLike} />
+          ))}
       </div>
     );
   }

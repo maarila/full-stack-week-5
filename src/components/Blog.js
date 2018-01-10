@@ -28,18 +28,21 @@ class Blog extends React.Component {
     return (
       <div style={blogStyle}>
         <div style={showTitle}>
-          <div onClick={this.toggleShowAll}>{this.props.title}</div>
+          <div onClick={this.toggleShowAll}>{this.props.blog.title}</div>
         </div>
         <div style={showFullInfo}>
-          <div onClick={this.toggleShowAll}>{this.props.title}</div>
-          <div>{this.props.author}</div>
+          <div onClick={this.toggleShowAll}>{this.props.blog.title}</div>
+          <div>{this.props.blog.author}</div>
           <div>
-            <a href={this.props.url}>{this.props.url}</a>
+            <a href={this.props.blog.url}>{this.props.blog.url}</a>
           </div>
           <div>
-            {this.props.likes} likes<button>like</button>
+            {this.props.blog.likes} likes<button
+              onClick={this.props.handleClick(this.props.blog)}>
+              like
+            </button>
           </div>
-          <div>added by {this.props.user}</div>
+          <div>added by {this.props.blog.user.name}</div>
         </div>
       </div>
     );
