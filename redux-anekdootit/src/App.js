@@ -6,6 +6,14 @@ class App extends Component {
     this.props.store.dispatch(actionFor.addingLike(id));
   };
 
+  getId = () => (100000 * Math.random()).toFixed(0);
+
+  addNote = (e) => {
+    e.preventDefault();
+    this.props.store.dispatch(actionFor.creatingNote(e.target.anecdote.value));
+    e.target.anecdote.value = "";
+  };
+
   render() {
     const anecdotes = this.props.store.getState();
     const byLikes = (anecdote1, anecdote2) =>
@@ -23,9 +31,9 @@ class App extends Component {
           </div>
         ))}
         <h2>create new</h2>
-        <form>
+        <form onSubmit={this.addNote}>
           <div>
-            <input />
+            <input name="anecdote" />
           </div>
           <button>create</button>
         </form>

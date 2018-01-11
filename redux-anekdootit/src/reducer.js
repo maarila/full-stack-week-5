@@ -30,8 +30,16 @@ const reducer = (store = initialState, action) => {
         votes: likedAnecdote[0].votes + 1
       };
       return [...otherAnecdotes, newAnecdote];
+    case "NEW_ANECDOTE":
+      const anecdote = {
+        content: action.data.content,
+        id: getId(),
+        votes: 0
+      };
+      return [...store, anecdote];
+    default:
+      return store;
   }
-  return store;
 };
 
 export default reducer;
