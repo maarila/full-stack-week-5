@@ -8,10 +8,12 @@ class App extends Component {
 
   render() {
     const anecdotes = this.props.store.getState();
+    const byLikes = (anecdote1, anecdote2) =>
+      anecdote1.votes > anecdote2.votes ? -1 : 1;
     return (
       <div>
         <h2>Anecdotes</h2>
-        {anecdotes.map((anecdote) => (
+        {anecdotes.sort(byLikes).map((anecdote) => (
           <div key={anecdote.id}>
             <div>{anecdote.content}</div>
             <div>
