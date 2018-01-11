@@ -2,8 +2,6 @@
 
 # dependencies
 /node_modules
-/redux-unicafe/node_modules
-/redux-anekdootit/node_modules
 
 # testing
 /coverage
