@@ -214,7 +214,9 @@ class App extends React.Component {
               render={({match}) => (
                 <PlainBlog
                   blog={blogById(match.params.id)}
+                  username={this.state.user.username}
                   handleLike={this.addLike}
+                  handleDelete={this.deleteBlog}
                 />
               )}
             />
