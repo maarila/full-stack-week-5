@@ -1,6 +1,7 @@
 import React from "react";
 import Notification from "./components/Notification";
 import Users from "./components/Users";
+import User from "./components/User";
 import BlogForm from "./components/BlogForm";
 import Entries from "./components/Entries";
 import Login from "./components/Login";
@@ -161,6 +162,9 @@ class App extends React.Component {
   };
 
   render() {
+    const userById = (id) =>
+      this.state.users.find((user) => user.id === id);
+
     if (this.state.user === null) {
       return (
         <div className="loginFields">
@@ -196,7 +200,6 @@ class App extends React.Component {
         </Togglable>
         <Router>
           <div>
-            <Route path="/users" render={() => <Users users={this.state.users}/>} />
             <Route
               exact
               path="/"
@@ -208,6 +211,16 @@ class App extends React.Component {
                   deleteBlog={this.deleteBlog}
                 />
               )}
+            />
+            <Route
+              exact
+              path="/users/:id"
+              render={({match}) => <User user={userById(match.params.id)} />}
+            />
+
+            <Route
+              path="/users"
+              render={() => <Users users={this.state.users} />}
             />
           </div>
         </Router>
