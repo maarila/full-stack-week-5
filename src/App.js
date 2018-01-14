@@ -1,11 +1,14 @@
 import React from "react";
-import Blog from "./components/Blog";
 import Notification from "./components/Notification";
+import Users from "./components/Users";
 import BlogForm from "./components/BlogForm";
+import Entries from "./components/Entries";
 import Login from "./components/Login";
 import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import userService from "./services/users";
+import {BrowserRouter as Router, Route} from "react-router-dom";
 import "./App.css";
 
 class App extends React.Component {
@@ -18,6 +21,7 @@ class App extends React.Component {
       error: null,
       success: null,
       blogs: [],
+      users: [],
       title: "",
       author: "",
       url: ""
@@ -26,6 +30,7 @@ class App extends React.Component {
 
   componentWillMount() {
     blogService.getAll().then((blogs) => this.setState({blogs}));
+    userService.getAll().then((users) => this.setState({users}));
 
     const loggedUserJSON = window.localStorage.getItem("loggedUser");
     if (loggedUserJSON) {
@@ -51,6 +56,7 @@ class App extends React.Component {
         user,
         success: `User ${user.name} successfully logged in`
       });
+
       setTimeout(() => {
         this.setState({success: null});
       }, 4000);
@@ -83,8 +89,8 @@ class App extends React.Component {
         title: "",
         author: "",
         url: "",
-        success: `"${blogObject.title}" by ${
-          blogObject.author
+        success: `"${newBlog.title}" by ${
+          newBlog.author
         } successfully added to database.`
       });
       setTimeout(() => {
@@ -155,7 +161,6 @@ class App extends React.Component {
   };
 
   render() {
-    const byId = (blog1, blog2) => (blog1.likes < blog2.likes ? 1 : -1);
     if (this.state.user === null) {
       return (
         <div className="loginFields">
@@ -189,19 +194,23 @@ class App extends React.Component {
             url={this.state.url}
           />
         </Togglable>
-        <h2>entries</h2>
-        {this.state.blogs
-          .sort(byId)
-          .map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              user={this.state.user}
-              handleClick={this.addLike}
-              handleDelete={this.deleteBlog}
-              className="blog"
+        <Router>
+          <div>
+            <Route path="/users" render={() => <Users users={this.state.users}/>} />
+            <Route
+              exact
+              path="/"
+              render={() => (
+                <Entries
+                  blogs={this.state.blogs}
+                  user={this.state.user}
+                  addLike={this.addLike}
+                  deleteBlog={this.deleteBlog}
+                />
+              )}
             />
-          ))}
+          </div>
+        </Router>
       </div>
     );
   }
