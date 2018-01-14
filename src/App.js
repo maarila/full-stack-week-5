@@ -3,6 +3,7 @@ import Notification from "./components/Notification";
 import Users from "./components/Users";
 import User from "./components/User";
 import BlogForm from "./components/BlogForm";
+import PlainBlog from "./components/PlainBlog";
 import Entries from "./components/Entries";
 import Login from "./components/Login";
 import Togglable from "./components/Togglable";
@@ -162,8 +163,8 @@ class App extends React.Component {
   };
 
   render() {
-    const userById = (id) =>
-      this.state.users.find((user) => user.id === id);
+    const userById = (id) => this.state.users.find((user) => user.id === id);
+    const blogById = (id) => this.state.blogs.find((blog) => blog.id === id);
 
     if (this.state.user === null) {
       return (
@@ -203,12 +204,15 @@ class App extends React.Component {
             <Route
               exact
               path="/"
-              render={() => (
-                <Entries
-                  blogs={this.state.blogs}
-                  user={this.state.user}
-                  addLike={this.addLike}
-                  deleteBlog={this.deleteBlog}
+              render={() => <Entries blogs={this.state.blogs} />}
+            />
+            <Route
+              exact
+              path="/blogs/:id"
+              render={({match}) => (
+                <PlainBlog
+                  blog={blogById(match.params.id)}
+                  handleLike={this.addLike}
                 />
               )}
             />
@@ -217,7 +221,6 @@ class App extends React.Component {
               path="/users/:id"
               render={({match}) => <User user={userById(match.params.id)} />}
             />
-
             <Route
               path="/users"
               render={() => <Users users={this.state.users} />}

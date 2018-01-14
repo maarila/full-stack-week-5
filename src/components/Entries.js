@@ -1,23 +1,26 @@
 import React from "react";
-import Blog from "./Blog";
+import {Link} from "react-router-dom";
 
-const Entries = ({blogs, user, addLike, deleteBlog}) => {
-  const byId = (blog1, blog2) => (blog1.likes < blog2.likes ? 1 : -1);
+const Entries = ({blogs}) => {
+  const blogStyle = {
+    width: 400,
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: "solid",
+    borderWidth: 1,
+    marginBottom: 5
+  };
+
   return (
     <div>
       <h2>entries</h2>
-      {blogs
-        .sort(byId)
-        .map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            user={user}
-            handleClick={addLike}
-            handleDelete={deleteBlog}
-            className="blog"
-          />
+      <div>
+        {blogs.map((blog) => (
+          <div key={blog.id} style={blogStyle}>
+            <Link to={`blogs/${blog.id}`}>{blog.title}</Link>
+          </div>
         ))}
+      </div>
     </div>
   );
 };
