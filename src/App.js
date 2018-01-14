@@ -10,7 +10,7 @@ import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import userService from "./services/users";
-import {BrowserRouter as Router, Route} from "react-router-dom";
+import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import "./App.css";
 
 class App extends React.Component {
@@ -184,23 +184,25 @@ class App extends React.Component {
       <div>
         <Notification error={this.state.error} success={this.state.success} />
         <h2>blogs</h2>
-        <p>
-          <em>{this.state.user.name} is logged in </em>
-          <button onClick={this.logout}>logout</button>
-        </p>
-        <Togglable
-          buttonLabel="create new entry"
-          ref={(component) => (this.blogForm = component)}>
-          <BlogForm
-            handleBlogCreation={this.handleBlogCreation}
-            addBlog={this.addBlog}
-            title={this.state.title}
-            author={this.state.author}
-            url={this.state.url}
-          />
-        </Togglable>
         <Router>
           <div>
+            <p>
+              <Link to="/">blogs</Link> &nbsp;
+              <Link to="/users">users</Link> &nbsp;
+              <em>{this.state.user.name} is logged in </em>
+              <button onClick={this.logout}>logout</button>
+            </p>
+            <Togglable
+              buttonLabel="create new entry"
+              ref={(component) => (this.blogForm = component)}>
+              <BlogForm
+                handleBlogCreation={this.handleBlogCreation}
+                addBlog={this.addBlog}
+                title={this.state.title}
+                author={this.state.author}
+                url={this.state.url}
+              />
+            </Togglable>
             <Route
               exact
               path="/"
