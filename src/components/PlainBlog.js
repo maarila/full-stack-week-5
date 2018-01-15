@@ -1,35 +1,65 @@
 import React from "react";
 
-const PlainBlog = ({blog, username, handleLike, handleDelete}) => {
-  if (blog === undefined) {
-    return null;
+class PlainBlog extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      comment: ""
+    };
   }
-  const blogAdder = blog.user === undefined ? "anonymous" : blog.user.name;
 
-  const blogsUsername =
-    blog.user === undefined ? "anonymous" : blog.user.username;
-  const showDelete = {
-    display:
-      username === blogsUsername || "anonymous" === blogsUsername ? "" : "none"
-  };
+  render() {
+    if (this.props.blog === undefined) {
+      return null;
+    }
+    const blogAdder =
+      this.props.blog.user === undefined
+        ? "anonymous"
+        : this.props.blog.user.name;
 
-  return (
-    <div>
-      <h2>
-        {blog.title} by {blog.author}
-      </h2>
+    const blogsUsername =
+      this.props.blog.user === undefined
+        ? "anonymous"
+        : this.props.blog.user.username;
+    const showDelete = {
+      display:
+        this.props.username === blogsUsername || "anonymous" === blogsUsername
+          ? ""
+          : "none"
+    };
+    return (
       <div>
-        <a href={blog.url}>{blog.url}</a>
+        <h2>
+          {this.props.blog.title} by {this.props.blog.author}
+        </h2>
+        <div>
+          <a href={this.props.blog.url}>{this.props.blog.url}</a>
+        </div>
+        <div>
+          {this.props.blog.likes} likes{" "}
+          <button onClick={this.props.handleLike(this.props.blog)}>like</button>
+        </div>
+        <div>added by {blogAdder}</div>
+        <div style={showDelete}>
+          <button onClick={this.props.handleDelete(this.props.blog.id)}>
+            delete
+          </button>
+        </div>
+        <h3>comments</h3>
+        <ul>
+          {this.props.blog.comments.map((comment, index) => (
+            <li key={index}>{comment}</li>
+          ))}
+        </ul>
+        <form>
+          <div>
+            <input />
+            <button>add comment</button>
+          </div>
+        </form>
       </div>
-      <div>
-        {blog.likes} likes <button onClick={handleLike(blog)}>like</button>
-      </div>
-      <div>added by {blogAdder}</div>
-      <div style={showDelete}>
-        <button onClick={handleDelete(blog.id)}>delete</button>
-      </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default PlainBlog;

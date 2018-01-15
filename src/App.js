@@ -26,7 +26,8 @@ class App extends React.Component {
       users: [],
       title: "",
       author: "",
-      url: ""
+      url: "",
+      comment: ""
     };
   }
 
