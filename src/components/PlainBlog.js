@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 class PlainBlog extends React.Component {
   constructor(props) {
@@ -61,5 +62,11 @@ class PlainBlog extends React.Component {
     );
   }
 }
+
+PlainBlog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  handleLike: PropTypes.func.isRequired
+};
 
 export default PlainBlog;

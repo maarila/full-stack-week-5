@@ -1,5 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import PropTypes from "prop-types";
 
 const Entries = ({blogs}) => {
   const blogStyle = {
@@ -23,6 +24,10 @@ const Entries = ({blogs}) => {
       </div>
     </div>
   );
+};
+
+Entries.propTypes = {
+  blogs: PropTypes.array.isRequired
 };
 
 export default Entries;
