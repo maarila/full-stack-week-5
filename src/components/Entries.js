@@ -1,27 +1,27 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import {Table} from "react-bootstrap";
 import PropTypes from "prop-types";
 
 const Entries = ({blogs}) => {
   const blogStyle = {
-    width: 400,
-    paddingTop: 10,
     paddingLeft: 2,
     border: "solid",
-    borderWidth: 1,
-    marginBottom: 5
+    borderWidth: 1    
   };
 
   return (
     <div>
-      <h2>entries</h2>
-      <div>
+      <h2>Entries</h2>
+      <Table striped>
+      <tbody>
         {blogs.map((blog) => (
-          <div key={blog.id} style={blogStyle}>
-            <Link to={`blogs/${blog.id}`}>{blog.title}</Link>
-          </div>
+          <tr key={blog.id} style={blogStyle}>
+            <td><Link to={`blogs/${blog.id}`}>{blog.title}</Link></td>
+          </tr>
         ))}
-      </div>
+        </tbody>
+      </Table>
     </div>
   );
 };

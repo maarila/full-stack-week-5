@@ -11,6 +11,7 @@ import blogService from "./services/blogs";
 import loginService from "./services/login";
 import userService from "./services/users";
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
+import {Button, Nav, Navbar, NavItem} from "react-bootstrap";
 import "./App.css";
 
 class App extends React.Component {
@@ -205,7 +206,7 @@ class App extends React.Component {
 
     if (this.state.user === null) {
       return (
-        <div className="loginFields">
+        <div className="container">
           <Notification error={this.state.error} success={this.state.success} />
           <Login
             handleLogin={this.login}
@@ -218,17 +219,34 @@ class App extends React.Component {
       );
     }
     return (
-      <div>
+      <div className="container">
         <Notification error={this.state.error} success={this.state.success} />
-        <h2>blogs</h2>
+        <h2>Full Stack Blog App</h2>
         <Router>
           <div>
-            <p>
-              <Link to="/">blogs</Link> &nbsp;
-              <Link to="/users">users</Link> &nbsp;
-              <em>{this.state.user.name} is logged in </em>
-              <button onClick={this.logout}>logout</button>
-            </p>
+            <div>
+              <Navbar inverse collapseOnSelect>
+                <Navbar.Header>
+                  <Navbar.Toggle />
+                </Navbar.Header>
+                <Navbar.Collapse>
+                  <Nav>
+                    <NavItem href="#">
+                      <Link to="/">BLOGS</Link>
+                    </NavItem>
+                    <NavItem href="#">
+                      <Link to="/users">USERS</Link>
+                    </NavItem>
+                    <NavItem />
+                  </Nav>
+                </Navbar.Collapse>
+              </Navbar>
+              <div>
+                <em>{this.state.user.name} is currently logged in </em>
+                <Button bsSize="xsmall" onClick={this.logout}>logout</Button>
+              </div>
+            </div>
+            <br />
             <Togglable
               buttonLabel="create new entry"
               ref={(component) => (this.blogForm = component)}>

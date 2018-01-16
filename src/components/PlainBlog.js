@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {Table, Button} from "react-bootstrap";
 
 const PlainBlog = ({
   blog,
@@ -33,23 +34,37 @@ const PlainBlog = ({
         <a href={blog.url}>{blog.url}</a>
       </div>
       <div>
-        {blog.likes} likes <button onClick={handleLike(blog)}>like</button>
+        {blog.likes} likes{" "}
+        <Button bsSize="xsmall" onClick={handleLike(blog)}>
+          like
+        </Button>
       </div>
       <div>added by {blogAdder}</div>
       <div style={showDelete}>
-        <button onClick={handleDelete(blog.id)}>delete</button>
+        <Button
+          bsStyle="danger"
+          bsSize="xsmall"
+          onClick={handleDelete(blog.id)}>
+          delete
+        </Button>
       </div>
       <h3>comments</h3>
-      <ul>
-        {comments.map((comment) => <li key={comment.id}>{comment.comment}</li>)}
-      </ul>
+      <Table striped>
+        <tbody>
+          {comments.map((comment) => (
+            <tr key={comment.id}>
+              <td>{comment.comment}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
       <form onSubmit={(e) => addBlogComment(blog.id, e)}>
         <input
           name="newComment"
           value={newComment}
           onChange={handleBlogCommentCreation}
         />
-        <button>add comment</button>
+        <Button bsStyle="primary" bsSize="small">add comment</Button>
       </form>
     </div>
   );
