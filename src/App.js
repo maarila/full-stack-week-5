@@ -28,7 +28,7 @@ class App extends React.Component {
       title: "",
       author: "",
       url: "",
-      comment: ""
+      newComment: ""
     };
   }
 
@@ -128,6 +128,30 @@ class App extends React.Component {
     };
   };
 
+  addBlogComment = (id, e) => {
+    e.preventDefault();
+
+    const commentedBlog = this.state.blogs.find((blog) => blog.id === id);
+
+    const blogComment = {
+      blogId: id,
+      comment: this.state.newComment
+    };
+
+    blogService.createComment(blogComment).then((createdComment) => {
+      this.setState({
+        blogComments: this.state.blogComments.concat(createdComment),
+        newComment: "",
+        success: `comment "${createdComment.comment}" added to blog "${
+          commentedBlog.title
+        }"`
+      });
+      setTimeout(() => {
+        this.setState({success: null});
+      }, 4000);
+    });
+  };
+
   deleteBlog = (id) => {
     return () => {
       const blogToDelete = this.state.blogs.filter((blog) => blog.id === id);
@@ -158,6 +182,10 @@ class App extends React.Component {
     this.setState({[e.target.name]: e.target.value});
   };
 
+  handleBlogCommentCreation = (e) => {
+    this.setState({[e.target.name]: e.target.value});
+  };
+
   logout = (e) => {
     window.localStorage.removeItem("loggedUser");
     this.setState({user: null});
@@ -171,7 +199,9 @@ class App extends React.Component {
     const userById = (id) => this.state.users.find((user) => user.id === id);
     const blogById = (id) => this.state.blogs.find((blog) => blog.id === id);
     const commentsById = (id) =>
-      this.state.blogComments.filter((blogComment) => blogComment.blogId === id);
+      this.state.blogComments.filter(
+        (blogComment) => blogComment.blogId === id
+      );
 
     if (this.state.user === null) {
       return (
@@ -225,6 +255,9 @@ class App extends React.Component {
                   username={this.state.user.username}
                   handleLike={this.addLike}
                   handleDelete={this.deleteBlog}
+                  handleBlogCommentCreation={this.handleBlogCommentCreation}
+                  addBlogComment={this.addBlogComment}
+                  newComment={this.state.newComment}
                 />
               )}
             />

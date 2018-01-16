@@ -1,7 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const PlainBlog = ({blog, comments, username, handleLike, handleDelete}) => {
+const PlainBlog = ({
+  blog,
+  comments,
+  username,
+  handleLike,
+  handleDelete,
+  handleBlogCommentCreation,
+  addBlogComment,
+  newComment
+}) => {
   if (blog === undefined) {
     return null;
   }
@@ -34,11 +43,13 @@ const PlainBlog = ({blog, comments, username, handleLike, handleDelete}) => {
       <ul>
         {comments.map((comment) => <li key={comment.id}>{comment.comment}</li>)}
       </ul>
-      <form>
-        <div>
-          <input />
-          <button>add comment</button>
-        </div>
+      <form onSubmit={(e) => addBlogComment(blog.id, e)}>
+        <input
+          name="newComment"
+          value={newComment}
+          onChange={handleBlogCommentCreation}
+        />
+        <button>add comment</button>
       </form>
     </div>
   );
