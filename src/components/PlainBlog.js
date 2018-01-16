@@ -1,70 +1,50 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-class PlainBlog extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      comment: ""
-    };
+const PlainBlog = ({blog, comments, username, handleLike, handleDelete}) => {
+  if (blog === undefined) {
+    return null;
   }
 
-  render() {
-    if (this.props.blog === undefined) {
-      return null;
-    }
-    const blogAdder =
-      this.props.blog.user === undefined
-        ? "anonymous"
-        : this.props.blog.user.name;
+  const blogAdder = blog.user === undefined ? "anonymous" : blog.user.name;
 
-    const blogsUsername =
-      this.props.blog.user === undefined
-        ? "anonymous"
-        : this.props.blog.user.username;
-    const showDelete = {
-      display:
-        this.props.username === blogsUsername || "anonymous" === blogsUsername
-          ? ""
-          : "none"
-    };
-    return (
+  const blogsUsername =
+    blog.user === undefined ? "anonymous" : blog.user.username;
+  const showDelete = {
+    display:
+      username === blogsUsername || "anonymous" === blogsUsername ? "" : "none"
+  };
+
+  return (
+    <div>
+      <h2>
+        {blog.title} by {blog.author}
+      </h2>
       <div>
-        <h2>
-          {this.props.blog.title} by {this.props.blog.author}
-        </h2>
-        <div>
-          <a href={this.props.blog.url}>{this.props.blog.url}</a>
-        </div>
-        <div>
-          {this.props.blog.likes} likes{" "}
-          <button onClick={this.props.handleLike(this.props.blog)}>like</button>
-        </div>
-        <div>added by {blogAdder}</div>
-        <div style={showDelete}>
-          <button onClick={this.props.handleDelete(this.props.blog.id)}>
-            delete
-          </button>
-        </div>
-        <h3>comments</h3>
-        <ul>
-          {this.props.blog.comments.map((comment, index) => (
-            <li key={index}>{comment}</li>
-          ))}
-        </ul>
-        <form>
-          <div>
-            <input />
-            <button>add comment</button>
-          </div>
-        </form>
+        <a href={blog.url}>{blog.url}</a>
       </div>
-    );
-  }
-}
+      <div>
+        {blog.likes} likes <button onClick={handleLike(blog)}>like</button>
+      </div>
+      <div>added by {blogAdder}</div>
+      <div style={showDelete}>
+        <button onClick={handleDelete(blog.id)}>delete</button>
+      </div>
+      <h3>comments</h3>
+      <ul>
+        {comments.map((comment) => <li key={comment.id}>{comment.comment}</li>)}
+      </ul>
+      <form>
+        <div>
+          <input />
+          <button>add comment</button>
+        </div>
+      </form>
+    </div>
+  );
+};
 
 PlainBlog.propTypes = {
-  blog: PropTypes.object.isRequired,
   handleDelete: PropTypes.func.isRequired,
   handleLike: PropTypes.func.isRequired
 };

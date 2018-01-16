@@ -24,6 +24,7 @@ class App extends React.Component {
       success: null,
       blogs: [],
       users: [],
+      blogComments: [],
       title: "",
       author: "",
       url: "",
@@ -33,6 +34,9 @@ class App extends React.Component {
 
   componentWillMount() {
     blogService.getAll().then((blogs) => this.setState({blogs}));
+    blogService.getComments().then((blogComments) => {
+      this.setState({blogComments});
+    });
     userService.getAll().then((users) => this.setState({users}));
 
     const loggedUserJSON = window.localStorage.getItem("loggedUser");
@@ -166,6 +170,8 @@ class App extends React.Component {
   render() {
     const userById = (id) => this.state.users.find((user) => user.id === id);
     const blogById = (id) => this.state.blogs.find((blog) => blog.id === id);
+    const commentsById = (id) =>
+      this.state.blogComments.filter((blogComment) => blogComment.blogId === id);
 
     if (this.state.user === null) {
       return (
@@ -215,6 +221,7 @@ class App extends React.Component {
               render={({match}) => (
                 <PlainBlog
                   blog={blogById(match.params.id)}
+                  comments={commentsById(match.params.id)}
                   username={this.state.user.username}
                   handleLike={this.addLike}
                   handleDelete={this.deleteBlog}
